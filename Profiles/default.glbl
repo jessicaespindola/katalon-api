@@ -9,4 +9,9 @@
       <initValue>'http://127.0.0.1:3000'</initValue>
       <name>baseUrl</name>
    </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description>Limite de tempo de resposta, em milissegundos. Acima disso o teste emite aviso.</description>
+      <initValue>2000</initValue>
+      <name>maxResponseTime</name>
+   </GlobalVariableEntity>
 </GlobalVariableEntities>

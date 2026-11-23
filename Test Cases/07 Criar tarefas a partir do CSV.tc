@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>O POST tarefa é o modelo. Cada linha do CSV cria uma execução com título, feita e status esperado.</description>
+   <name>07 Criar tarefas a partir do CSV</name>
+   <tag></tag>
+   <comment></comment>
+   <testCaseGuid>3a0e5c30-0b1a-4a1e-8c01-000000000027</testCaseGuid>
+   <variable>
+      <defaultValue>'Estudar o contrato'</defaultValue>
+      <description>Vem da coluna titulo. Na suíte, o CSV substitui este padrão a cada linha.</description>
+      <id>6a0e5c30-0b1a-4a1e-8c01-000000000071</id>
+      <masked>false</masked>
+      <name>titulo</name>
+   </variable>
+   <variable>
+      <defaultValue>false</defaultValue>
+      <description>Vem da coluna feita. O valor true é o texto true; qualquer outro texto vale false.</description>
+      <id>6a0e5c30-0b1a-4a1e-8c01-000000000072</id>
+      <masked>false</masked>
+      <name>feita</name>
+   </variable>
+   <variable>
+      <defaultValue>201</defaultValue>
+      <description>Vem da coluna statusEsperado.</description>
+      <id>6a0e5c30-0b1a-4a1e-8c01-000000000073</id>
+      <masked>false</masked>
+      <name>statusEsperado</name>
+   </variable>
+</TestCaseEntity>

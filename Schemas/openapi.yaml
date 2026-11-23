@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Tarefas
+  version: 1.0.0
+  description: Contrato da API local usada na trilha de estudo. O Katalon Studio importa este arquivo em Object Repository.
+servers:
+  - url: http://127.0.0.1:3000
+paths:
+  /health:
+    get:
+      operationId: verificarSaude
+      responses:
+        '200':
+          description: API no ar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+  /tarefas:
+    get:
+      operationId: listarTarefas
+      responses:
+        '200':
+          description: Lista em memória
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tarefa'
+    post:
+      operationId: criarTarefa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarefaEntrada'
+      responses:
+        '201':
+          description: Tarefa criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarefa'
+        '400':
+          description: Título ausente ou feita inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /tarefas/{id}:
+    get:
+      operationId: buscarTarefa
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Tarefa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarefa'
+        '404':
+          description: Tarefa ausente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    put:
+      operationId: atualizarTarefa
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarefaEntrada'
+      responses:
+        '200':
+          description: Tarefa atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarefa'
+        '404':
+          description: Tarefa ausente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    delete:
+      operationId: apagarTarefa
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '204':
+          description: Tarefa removida, sem corpo
+        '404':
+          description: Tarefa ausente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  schemas:
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status, servico]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        servico:
+          type: string
+    TarefaEntrada:
+      type: object
+      additionalProperties: false
+      required: [titulo]
+      properties:
+        titulo:
+          type: string
+          minLength: 1
+        feita:
+          type: boolean
+          default: false
+    Tarefa:
+      type: object
+      additionalProperties: false
+      required: [id, titulo, feita]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        titulo:
+          type: string
+        feita:
+          type: boolean
+    Erro:
+      type: object
+      additionalProperties: false
+      required: [erro]
+      properties:
+        erro:
+          type: string

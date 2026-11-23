@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalVariableEntities>
+   <description>Mesma API, outra porta. Suba o servidor com a variável de ambiente PORT=3001 e selecione este perfil na execução.</description>
+   <name>porta-3001</name>
+   <tag></tag>
+   <defaultProfile>false</defaultProfile>
+   <GlobalVariableEntity>
+      <description>Endereço da API quando o servidor sobe na porta 3001.</description>
+      <initValue>'http://127.0.0.1:3001'</initValue>
+      <name>baseUrl</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description>Limite de tempo de resposta, em milissegundos. Acima disso o teste emite aviso.</description>
+      <initValue>2000</initValue>
+      <name>maxResponseTime</name>
+   </GlobalVariableEntity>
+</GlobalVariableEntities>

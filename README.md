@@ -85,10 +85,11 @@ Para usar outra porta: `$env:PORT = "3001"; python demo-api/server.py` e, no Kat
 
 No **Tests Explorer** você deve ver:
 
-- **Profiles > default**, com `baseUrl = 'http://127.0.0.1:3000'`. O valor é uma expressão Groovy: texto fica entre aspas simples.
-- **Object Repository > Tarefas**, com um pedido para cada rota.
-- **Test Cases**, do 01 ao 06.
-- **Test Suites > Tarefas - estudos**.
+- **Profiles > default**, com `baseUrl` e `maxResponseTime`. O perfil `porta-3001` repete as mesmas variáveis para outra porta.
+- **Object Repository > Tarefas**, com um pedido para cada rota. Os pedidos do mesmo recurso ficam na mesma pasta.
+- **Data Files > criar-tarefa**, o CSV que alimenta o caso 07.
+- **Test Cases**, do 01 ao 07.
+- **Test Suites > Tarefas - estudos**. A suíte roda o caminho principal antes dos casos negativos.
 
 A pasta `demo-api` não aparece no explorer. O Studio só lista as pastas dele.
 
@@ -144,6 +145,7 @@ Status 200 com corpo errado também é falha. Por isso o caso confere os dois.
 | 04 Recusar tarefa sem titulo | POST com `titulo` vazio | O mesmo pedido do caso 05, com outros valores, e status 400 |
 | 05 Criar tarefa | POST | 201, campos de volta, e o `id` lido com `JsonSlurper` |
 | 06 Fluxo completo de uma tarefa | POST, GET, PUT, DELETE, GET | Um caso encadeia chamadas e usa o `id` que a API devolveu |
+| 07 Criar tarefas a partir do CSV | POST, uma vez por linha | O pedido é um modelo. O CSV troca título, `feita` e o status esperado |
 
 O caso 04 e o caso 05 usam o **mesmo** request `POST tarefa`. A diferença está no mapa passado para `findTestObject`:
 
@@ -160,15 +162,41 @@ No caso 06 o `id` não é fixo. O POST devolve o número, o `JsonSlurper` lê o 
 
 `DELETE` com sucesso responde **204** e não manda corpo. O caso só confere o status. Conferir um campo nesse ponto falharia, porque não há JSON.
 
+A suíte não segue a ordem numérica dos casos. Primeiro vêm saúde, lista, criação e o fluxo. O caso 07 repete o POST com o CSV. Os casos 03 e 04, que esperam erro, fecham a execução. A [introdução oficial](https://docs.katalon.com/katalon-studio/get-started/supported-applications-under-test-aut/introduction-to-api-testing-in-katalon-studio) pede para exercitar o caminho principal antes de concentrar o esforço nos negativos.
+
 ## 6. Três lugares onde um valor pode morar
 
 Não misture os três. Cada um tem um alcance diferente.
 
-- **Variável global** (`GlobalVariable.baseUrl`): o projeto inteiro. Perfil `default`.
+- **Variável global** (`GlobalVariable.baseUrl` e `GlobalVariable.maxResponseTime`): o projeto inteiro. Perfil `default`, ou `porta-3001` na hora de executar.
 - **Variável do request** (`${titulo}`, `${id}`): aquele pedido. O teste pode trocar o valor na hora do `findTestObject`.
 - **Valor dentro do script** (`'Criada pelo teste 05'`): só aquele test case.
 
 O padrão de uma variável no Object Repository é uma expressão Groovy. Número vai sem aspas (`1`, `false`). Texto vai com aspas simples (`'Estudar Katalon'`). Sem as aspas, o Studio tenta ler o texto como nome de variável e o pedido quebra.
+
+Na suíte, o caso 07 recebe essas variáveis como texto, porque o Katalon entrega cada célula do CSV como string. O script trata `true` como verdadeiro e qualquer outro texto, inclusive `false`, como falso.
+
+## 7. Boas práticas oficiais que este projeto segue
+
+A página de [API testing do Katalon](https://katalon.com/api-testing) descreve o fluxo: pedido reutilizável, verificação da resposta, dados por linha e perfil por ambiente. O guia de [scripting standards](https://docs.katalon.com/katalon-studio/create-test-cases/api-testing-best-practices-scripting-standards) diz que status 200 sozinho não prova que o dado está certo. A [introdução](https://docs.katalon.com/katalon-studio/get-started/supported-applications-under-test-aut/introduction-to-api-testing-in-katalon-studio) completa com prioridade do caminho principal, dados fora do script e endpoints agrupados.
+
+| Prática | Onde está |
+| --- | --- |
+| Status logo depois do pedido, em todo request | `estudo.Padrao.conferir`, chamado por cada caso |
+| `Content-Type` contém `application/json` | O mesmo método. O 204 fica de fora, porque não tem corpo |
+| Schema JSON para não deixar um número virar texto em silêncio | `Schemas/`. O método lê o arquivo com `RunConfiguration.getProjectDir()` e passa o texto para `WS.validateJsonAgainstSchema` |
+| Valor de negócio, além do schema | `verifyElementPropertyValue` e a regra `id > 0` |
+| Lista que não pode voltar vazia | Caso 02 |
+| Tempo acima de 2000 ms vira aviso, sem derrubar a suíte | `GlobalVariable.maxResponseTime` nos perfis `default` e `porta-3001` |
+| Resposta de criação guardada campo a campo | Caso 05 |
+| Pedidos do mesmo recurso na mesma pasta | `Object Repository/Tarefas` |
+| O POST é um modelo; as linhas variam | `Data Files/criar-tarefa.csv`, ligado ao caso 07 na suíte |
+| Caminho principal antes do negativo | Ordem da suíte |
+| Contrato publicado para importar no Studio | `Schemas/openapi.yaml` |
+
+`WS.validateJsonAgainstSchema` é o keyword citado no guia de fevereiro de 2026. O Studio 10 ou mais novo é a versão recomendada lá. O segundo argumento é o conteúdo do arquivo, não o caminho.
+
+O que a página de produto também cita e este estudo ainda não faz: autorização, suíte no Katalon Runtime Engine e geração de testes a partir do OpenAPI. Não há login nesta API, e o Runtime Engine é outra instalação.
 
 ## Mapa dos arquivos
 
@@ -178,7 +206,12 @@ Profiles/default.glbl                    baseUrl
 Object Repository/Tarefas/*.rs           os seis pedidos HTTP
 Test Cases/*.tc                          metadados de cada caso
 Scripts/<mesmo nome do caso>/*.groovy    o código que roda
-Test Suites/Tarefas - estudos.ts         a suíte
+Test Suites/Tarefas - estudos.ts         a suíte, caminho principal primeiro
+Data Files/criar-tarefa.csv              linhas do caso 07
+Schemas/                                 JSON Schema e o OpenAPI
+Include/scripts/groovy/estudo/Padrao.groovy
+                                         status, Content-Type, schema e tempo
+Profiles/porta-3001.glbl                 a mesma suíte em outra porta
 demo-api/server.py                       a API que os testes chamam
 relatorio/ultima-execucao.html           relatório da última execução fora do Studio
 ```
@@ -200,7 +233,7 @@ Cada uma cabe num acréscimo pequeno. Quando fizer, registre no diário o que mu
 2. **Um pedido novo.** Inclua `GET /tarefas/1` como caso próprio, separado do fluxo, esperando o título "Ler o README".
 3. **Verification no request.** Na aba Verification de `GET health`, repita a conferência de `status`. Compare **Test Request and Verify** (experimentar) com rodar o test case (relatório).
 4. **Keyword sua.** Extraia o POST do caso 05 para `Keywords`, com `@Keyword`, e chame por `CustomKeywords.'...'`. O caso fica curto; o pedido continua no Object Repository.
-5. **Data-driven.** Uma planilha com vários títulos, ligada ao caso 05 na suíte, cria uma tarefa por linha sem copiar o script.
+5. **Trocar de perfil.** Rode a suíte com o perfil `porta-3001` e o servidor em `PORT=3001`. O pedido não muda; muda `baseUrl`.
 
 Documentação oficial, quando quiser o mesmo fluxo pela interface: [Create your first API test](https://docs.katalon.com/katalon-studio/create-test-cases/create-your-first-api-test-with-katalon-studio) e o [projeto de exemplo de Web Service](https://github.com/katalon-studio-samples/web-service-tests).
 
@@ -221,3 +254,11 @@ Anote data, o que você rodou e o que o resultado te mostrou. A primeira entrada
 - Seis conferências contra `http://127.0.0.1:3000`. Todas passaram.
 - O Katalon Studio não está instalado, então a pasta `Reports/` continuou vazia.
 - O resultado ficou em `relatorio/ultima-execucao.html`.
+
+### 2026-11-23 — práticas oficiais de API
+
+- Cada pedido passa por status, `Content-Type`, schema e tempo, em `estudo.Padrao`.
+- Schemas em `Schemas/`, mais `openapi.yaml` para importar no Studio.
+- Caso 07 lê `Data Files/criar-tarefa.csv`: dois títulos válidos e um vazio.
+- A suíte executa o caminho principal antes dos casos 03 e 04.
+- Perfil `porta-3001` guarda a outra `baseUrl`. O limite de tempo é 2000 ms, como aviso.

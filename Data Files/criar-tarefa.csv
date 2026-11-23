@@ -1,0 +1,4 @@
+titulo,feita,statusEsperado
+Estudar o contrato,false,201
+Lembrar o SLA,true,201
+,false,400
