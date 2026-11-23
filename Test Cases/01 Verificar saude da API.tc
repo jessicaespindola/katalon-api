@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>O teste mais curto: a API responde 200 e diz que está ok.</description>
+   <name>01 Verificar saude da API</name>
+   <tag></tag>
+   <comment></comment>
+   <testCaseGuid>3a0e5c30-0b1a-4a1e-8c01-000000000021</testCaseGuid>
+</TestCaseEntity>

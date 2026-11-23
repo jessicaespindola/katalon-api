@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalVariableEntities>
+   <description>Perfil local. A baseUrl aponta para a API de tarefas deste repositório.</description>
+   <name>default</name>
+   <tag></tag>
+   <defaultProfile>true</defaultProfile>
+   <GlobalVariableEntity>
+      <description>Endereço da API. Mude aqui se subir o servidor em outra porta.</description>
+      <initValue>'http://127.0.0.1:3000'</initValue>
+      <name>baseUrl</name>
+   </GlobalVariableEntity>
+</GlobalVariableEntities>

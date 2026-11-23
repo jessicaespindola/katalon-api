@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>Cria, busca, atualiza, apaga e confirma que a tarefa sumiu. Um teste, várias chamadas.</description>
+   <name>06 Fluxo completo de uma tarefa</name>
+   <tag></tag>
+   <comment></comment>
+   <testCaseGuid>3a0e5c30-0b1a-4a1e-8c01-000000000026</testCaseGuid>
+</TestCaseEntity>

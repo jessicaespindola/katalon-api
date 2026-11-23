@@ -1,0 +1,13 @@
+.gradle
+bin
+Reports
+Libs
+output
+build
+.classpath
+.project
+.cache
+*.log
+__pycache__/
+.venv/
+.idea/

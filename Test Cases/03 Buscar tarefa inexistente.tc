@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>Um id que não existe deve devolver 404, não 200 com corpo vazio.</description>
+   <name>03 Buscar tarefa inexistente</name>
+   <tag></tag>
+   <comment></comment>
+   <testCaseGuid>3a0e5c30-0b1a-4a1e-8c01-000000000023</testCaseGuid>
+</TestCaseEntity>

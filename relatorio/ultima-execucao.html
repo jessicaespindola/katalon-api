@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Relatório — API de tarefas</title>
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; font-family: "Segoe UI", sans-serif; background: #f4f1ea; color: #1d1a16; }
+    main { max-width: 880px; margin: 0 auto; padding: 40px 20px 64px; }
+    h1 { font-size: 32px; margin: 0 0 8px; }
+    .resumo { display: flex; gap: 16px; margin: 24px 0; }
+    .resumo div { background: white; border: 1px solid #e2d9cc; border-radius: 12px; padding: 16px 18px; min-width: 120px; }
+    .resumo strong { display: block; font-size: 28px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
+    th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #eee6db; vertical-align: top; }
+    th { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: #6d645b; }
+    .passou { color: #0d6b3d; font-weight: 650; }
+    .falhou { color: #9d1c1c; font-weight: 650; }
+    article { background: white; border: 1px solid #e2d9cc; border-left: 6px solid #0d6b3d; border-radius: 12px; padding: 8px 18px 18px; margin-top: 16px; }
+    article.falhou { border-left-color: #9d1c1c; }
+    .passo h3 { font-size: 15px; margin-bottom: 8px; }
+    .passo span { color: #6d645b; font-weight: 500; }
+    pre { background: #f7f4ee; border-radius: 8px; padding: 12px; overflow: auto; }
+    .nota { color: #5c564e; line-height: 1.5; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Relatório da execução</h1>
+  <p class="nota">API de tarefas em http://127.0.0.1:3000. Gerado em 23/11/2026 00:20:42. Duração 1361 ms.</p>
+  <p class="nota">Estas são as conferências dos seis test cases. O Katalon Studio não estava instalado, então este arquivo não é o relatório do Studio. Quando a suíte rodar lá, o relatório oficial fica na pasta Reports.</p>
+  <div class="resumo">
+    <div><strong>6</strong>passaram</div>
+    <div><strong>0</strong>falharam</div>
+    <div><strong>6</strong>casos</div>
+  </div>
+  <table>
+    <thead><tr><th>Caso</th><th>Conferência</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>01 Verificar saude da API</td><td>GET /health devolve 200, status ok e servico tarefas.</td><td class='passou'>passou</td></tr><tr><td>02 Listar tarefas</td><td>A primeira tarefa da lista inicial é id 1, título Ler o README, feita false.</td><td class='passou'>passou</td></tr><tr><td>03 Buscar tarefa inexistente</td><td>Id desconhecido responde 404 com a mensagem Tarefa nao encontrada.</td><td class='passou'>passou</td></tr><tr><td>04 Recusar tarefa sem titulo</td><td>POST com título vazio responde 400 e não grava a tarefa.</td><td class='passou'>passou</td></tr><tr><td>05 Criar tarefa</td><td>POST válido responde 201, devolve o título e um id numérico.</td><td class='passou'>passou</td></tr><tr><td>06 Fluxo completo de uma tarefa</td><td>Cria, busca, marca como feita, apaga e confirma o 404.</td><td class='passou'>passou</td></tr>
+    </tbody>
+  </table>
+  <article class='passou'><h2>01 Verificar saude da API</h2><p>GET /health devolve 200, status ok e servico tarefas.</p><section class='passo'><h3>GET /health <span>HTTP 200</span></h3><pre>{
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;servico&quot;: &quot;tarefas&quot;
+}</pre></section></article><article class='passou'><h2>02 Listar tarefas</h2><p>A primeira tarefa da lista inicial é id 1, título Ler o README, feita false.</p><section class='passo'><h3>GET /tarefas <span>HTTP 200</span></h3><pre>[
+  {
+    &quot;id&quot;: 1,
+    &quot;titulo&quot;: &quot;Ler o README&quot;,
+    &quot;feita&quot;: false
+  },
+  {
+    &quot;id&quot;: 2,
+    &quot;titulo&quot;: &quot;Subir a API local&quot;,
+    &quot;feita&quot;: true
+  }
+]</pre></section></article><article class='passou'><h2>03 Buscar tarefa inexistente</h2><p>Id desconhecido responde 404 com a mensagem Tarefa nao encontrada.</p><section class='passo'><h3>GET /tarefas/99999 <span>HTTP 404</span></h3><pre>{
+  &quot;erro&quot;: &quot;Tarefa nao encontrada&quot;
+}</pre></section></article><article class='passou'><h2>04 Recusar tarefa sem titulo</h2><p>POST com título vazio responde 400 e não grava a tarefa.</p><section class='passo'><h3>POST /tarefas <span>HTTP 400</span></h3><pre>{
+  &quot;titulo&quot;: &quot;&quot;,
+  &quot;feita&quot;: false
+}</pre><pre>{
+  &quot;erro&quot;: &quot;Informe o titulo&quot;
+}</pre></section></article><article class='passou'><h2>05 Criar tarefa</h2><p>POST válido responde 201, devolve o título e um id numérico.</p><section class='passo'><h3>POST /tarefas <span>HTTP 201</span></h3><pre>{
+  &quot;titulo&quot;: &quot;Criada pelo teste 05&quot;,
+  &quot;feita&quot;: false
+}</pre><pre>{
+  &quot;id&quot;: 3,
+  &quot;titulo&quot;: &quot;Criada pelo teste 05&quot;,
+  &quot;feita&quot;: false
+}</pre></section></article><article class='passou'><h2>06 Fluxo completo de uma tarefa</h2><p>Cria, busca, marca como feita, apaga e confirma o 404.</p><section class='passo'><h3>POST /tarefas <span>HTTP 201</span></h3><pre>{
+  &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
+  &quot;feita&quot;: false
+}</pre><pre>{
+  &quot;id&quot;: 4,
+  &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
+  &quot;feita&quot;: false
+}</pre></section><section class='passo'><h3>GET /tarefas/4 <span>HTTP 200</span></h3><pre>{
+  &quot;id&quot;: 4,
+  &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
+  &quot;feita&quot;: false
+}</pre></section><section class='passo'><h3>PUT /tarefas/4 <span>HTTP 200</span></h3><pre>{
+  &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
+  &quot;feita&quot;: true
+}</pre><pre>{
+  &quot;id&quot;: 4,
+  &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
+  &quot;feita&quot;: true
+}</pre></section><section class='passo'><h3>DELETE /tarefas/4 <span>HTTP 204</span></h3><pre>sem corpo</pre></section><section class='passo'><h3>GET /tarefas/4 <span>HTTP 404</span></h3><pre>{
+  &quot;erro&quot;: &quot;Tarefa nao encontrada&quot;
+}</pre></section></article>
+</main>
+</body>
+</html>
