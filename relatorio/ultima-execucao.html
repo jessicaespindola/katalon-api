@@ -27,23 +27,25 @@
 <body>
 <main>
   <h1>Relatório da execução</h1>
-  <p class="nota">API de tarefas em http://127.0.0.1:3000. Gerado em 23/11/2026 00:20:42. Duração 1361 ms.</p>
-  <p class="nota">Estas são as conferências dos seis test cases. O Katalon Studio não estava instalado, então este arquivo não é o relatório do Studio. Quando a suíte rodar lá, o relatório oficial fica na pasta Reports.</p>
+  <p class="nota">API de tarefas em http://127.0.0.1:3000. Gerado em 23/11/2026 00:35:19. A bateria levou 88 ms. A abertura da conexão, fora da conta, levou 58 ms.</p>
+  <p class="nota">Os ajustes não encurtaram a API: os pedidos seguintes à abertura ficam na casa de 1 ms, bem abaixo do aviso de 2000 ms. O que mudou foi a leitura. A tabela segue a ordem da suíte, com o grupo, o schema e o tempo de cada caso. O Katalon Studio não estava instalado, então este arquivo não é o relatório da pasta Reports.</p>
   <div class="resumo">
-    <div><strong>6</strong>passaram</div>
+    <div><strong>7</strong>passaram</div>
     <div><strong>0</strong>falharam</div>
-    <div><strong>6</strong>casos</div>
+    <div><strong>4 ms</strong>pedido mais lento</div>
+    <div><strong>13/13</strong>dentro de 2000 ms</div>
+    <div><strong>20 ms</strong>soma dos pedidos</div>
   </div>
   <table>
-    <thead><tr><th>Caso</th><th>Conferência</th><th>Resultado</th></tr></thead>
+    <thead><tr><th>Grupo</th><th>Caso</th><th>Estrutura conferida</th><th>Tempo</th><th>Resultado</th></tr></thead>
     <tbody>
-      <tr><td>01 Verificar saude da API</td><td>GET /health devolve 200, status ok e servico tarefas.</td><td class='passou'>passou</td></tr><tr><td>02 Listar tarefas</td><td>A primeira tarefa da lista inicial é id 1, título Ler o README, feita false.</td><td class='passou'>passou</td></tr><tr><td>03 Buscar tarefa inexistente</td><td>Id desconhecido responde 404 com a mensagem Tarefa nao encontrada.</td><td class='passou'>passou</td></tr><tr><td>04 Recusar tarefa sem titulo</td><td>POST com título vazio responde 400 e não grava a tarefa.</td><td class='passou'>passou</td></tr><tr><td>05 Criar tarefa</td><td>POST válido responde 201, devolve o título e um id numérico.</td><td class='passou'>passou</td></tr><tr><td>06 Fluxo completo de uma tarefa</td><td>Cria, busca, marca como feita, apaga e confirma o 404.</td><td class='passou'>passou</td></tr>
+      <tr><td>principal</td><td>01 Verificar saude da API</td><td>HealthResponse.json · status, servico</td><td>2 ms</td><td class='passou'>passou</td></tr><tr><td>principal</td><td>02 Listar tarefas</td><td>ListaTarefas.json · id, titulo, feita</td><td>1 ms</td><td class='passou'>passou</td></tr><tr><td>principal</td><td>05 Criar tarefa</td><td>Tarefa.json · id, titulo, feita</td><td>1 ms</td><td class='passou'>passou</td></tr><tr><td>fluxo</td><td>06 Fluxo completo de uma tarefa</td><td>Tarefa.json e Erro.json</td><td>5 ms</td><td class='passou'>passou</td></tr><tr><td>dados</td><td>07 Criar tarefas a partir do CSV</td><td>criar-tarefa.csv · Tarefa.json ou Erro.json</td><td>5 ms</td><td class='passou'>passou</td></tr><tr><td>negativo</td><td>03 Buscar tarefa inexistente</td><td>Erro.json · erro</td><td>4 ms</td><td class='passou'>passou</td></tr><tr><td>negativo</td><td>04 Recusar tarefa sem titulo</td><td>Erro.json · erro</td><td>2 ms</td><td class='passou'>passou</td></tr>
     </tbody>
   </table>
-  <article class='passou'><h2>01 Verificar saude da API</h2><p>GET /health devolve 200, status ok e servico tarefas.</p><section class='passo'><h3>GET /health <span>HTTP 200</span></h3><pre>{
+  <article class='passou'><h2>01 Verificar saude da API</h2><p>GET /health devolve 200, status ok e servico tarefas.</p><section class='passo'><h3>GET /health <span>HTTP 200 · 2 ms · application/json; charset=utf-8</span></h3><pre>{
   &quot;status&quot;: &quot;ok&quot;,
   &quot;servico&quot;: &quot;tarefas&quot;
-}</pre></section></article><article class='passou'><h2>02 Listar tarefas</h2><p>A primeira tarefa da lista inicial é id 1, título Ler o README, feita false.</p><section class='passo'><h3>GET /tarefas <span>HTTP 200</span></h3><pre>[
+}</pre></section></article><article class='passou'><h2>02 Listar tarefas</h2><p>A primeira tarefa da lista inicial é id 1, título Ler o README, feita false.</p><section class='passo'><h3>GET /tarefas <span>HTTP 200 · 1 ms · application/json; charset=utf-8</span></h3><pre>[
   {
     &quot;id&quot;: 1,
     &quot;titulo&quot;: &quot;Ler o README&quot;,
@@ -54,40 +56,59 @@
     &quot;titulo&quot;: &quot;Subir a API local&quot;,
     &quot;feita&quot;: true
   }
-]</pre></section></article><article class='passou'><h2>03 Buscar tarefa inexistente</h2><p>Id desconhecido responde 404 com a mensagem Tarefa nao encontrada.</p><section class='passo'><h3>GET /tarefas/99999 <span>HTTP 404</span></h3><pre>{
-  &quot;erro&quot;: &quot;Tarefa nao encontrada&quot;
-}</pre></section></article><article class='passou'><h2>04 Recusar tarefa sem titulo</h2><p>POST com título vazio responde 400 e não grava a tarefa.</p><section class='passo'><h3>POST /tarefas <span>HTTP 400</span></h3><pre>{
-  &quot;titulo&quot;: &quot;&quot;,
-  &quot;feita&quot;: false
-}</pre><pre>{
-  &quot;erro&quot;: &quot;Informe o titulo&quot;
-}</pre></section></article><article class='passou'><h2>05 Criar tarefa</h2><p>POST válido responde 201, devolve o título e um id numérico.</p><section class='passo'><h3>POST /tarefas <span>HTTP 201</span></h3><pre>{
+]</pre></section></article><article class='passou'><h2>05 Criar tarefa</h2><p>POST válido responde 201, devolve o título e um id numérico.</p><section class='passo'><h3>POST /tarefas <span>HTTP 201 · 1 ms · application/json; charset=utf-8</span></h3><pre>{
   &quot;titulo&quot;: &quot;Criada pelo teste 05&quot;,
   &quot;feita&quot;: false
 }</pre><pre>{
   &quot;id&quot;: 3,
   &quot;titulo&quot;: &quot;Criada pelo teste 05&quot;,
   &quot;feita&quot;: false
-}</pre></section></article><article class='passou'><h2>06 Fluxo completo de uma tarefa</h2><p>Cria, busca, marca como feita, apaga e confirma o 404.</p><section class='passo'><h3>POST /tarefas <span>HTTP 201</span></h3><pre>{
+}</pre></section></article><article class='passou'><h2>06 Fluxo completo de uma tarefa</h2><p>Cria, busca, marca como feita, apaga e confirma o 404.</p><section class='passo'><h3>POST /tarefas <span>HTTP 201 · 1 ms · application/json; charset=utf-8</span></h3><pre>{
   &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
   &quot;feita&quot;: false
 }</pre><pre>{
   &quot;id&quot;: 4,
   &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
   &quot;feita&quot;: false
-}</pre></section><section class='passo'><h3>GET /tarefas/4 <span>HTTP 200</span></h3><pre>{
+}</pre></section><section class='passo'><h3>GET /tarefas/4 <span>HTTP 200 · 1 ms · application/json; charset=utf-8</span></h3><pre>{
   &quot;id&quot;: 4,
   &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
   &quot;feita&quot;: false
-}</pre></section><section class='passo'><h3>PUT /tarefas/4 <span>HTTP 200</span></h3><pre>{
+}</pre></section><section class='passo'><h3>PUT /tarefas/4 <span>HTTP 200 · 1 ms · application/json; charset=utf-8</span></h3><pre>{
   &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
   &quot;feita&quot;: true
 }</pre><pre>{
   &quot;id&quot;: 4,
   &quot;titulo&quot;: &quot;Estudar o fluxo do Katalon&quot;,
   &quot;feita&quot;: true
-}</pre></section><section class='passo'><h3>DELETE /tarefas/4 <span>HTTP 204</span></h3><pre>sem corpo</pre></section><section class='passo'><h3>GET /tarefas/4 <span>HTTP 404</span></h3><pre>{
+}</pre></section><section class='passo'><h3>DELETE /tarefas/4 <span>HTTP 204 · 1 ms · sem Content-Type</span></h3><pre>sem corpo</pre></section><section class='passo'><h3>GET /tarefas/4 <span>HTTP 404 · 1 ms · application/json; charset=utf-8</span></h3><pre>{
   &quot;erro&quot;: &quot;Tarefa nao encontrada&quot;
+}</pre></section></article><article class='passou'><h2>07 Criar tarefas a partir do CSV</h2><p>Cada linha de criar-tarefa.csv repete o POST: dois títulos válidos e um vazio.</p><section class='passo'><h3>POST /tarefas <span>HTTP 201 · 3 ms · application/json; charset=utf-8</span></h3><pre>{
+  &quot;titulo&quot;: &quot;Estudar o contrato&quot;,
+  &quot;feita&quot;: false
+}</pre><pre>{
+  &quot;id&quot;: 5,
+  &quot;titulo&quot;: &quot;Estudar o contrato&quot;,
+  &quot;feita&quot;: false
+}</pre></section><section class='passo'><h3>POST /tarefas <span>HTTP 201 · 1 ms · application/json; charset=utf-8</span></h3><pre>{
+  &quot;titulo&quot;: &quot;Lembrar o SLA&quot;,
+  &quot;feita&quot;: true
+}</pre><pre>{
+  &quot;id&quot;: 6,
+  &quot;titulo&quot;: &quot;Lembrar o SLA&quot;,
+  &quot;feita&quot;: true
+}</pre></section><section class='passo'><h3>POST /tarefas <span>HTTP 400 · 1 ms · application/json; charset=utf-8</span></h3><pre>{
+  &quot;titulo&quot;: &quot;&quot;,
+  &quot;feita&quot;: false
+}</pre><pre>{
+  &quot;erro&quot;: &quot;Informe o titulo&quot;
+}</pre></section></article><article class='passou'><h2>03 Buscar tarefa inexistente</h2><p>Id desconhecido responde 404 com a mensagem Tarefa nao encontrada.</p><section class='passo'><h3>GET /tarefas/99999 <span>HTTP 404 · 4 ms · application/json; charset=utf-8</span></h3><pre>{
+  &quot;erro&quot;: &quot;Tarefa nao encontrada&quot;
+}</pre></section></article><article class='passou'><h2>04 Recusar tarefa sem titulo</h2><p>POST com título vazio responde 400 e não grava a tarefa.</p><section class='passo'><h3>POST /tarefas <span>HTTP 400 · 2 ms · application/json; charset=utf-8</span></h3><pre>{
+  &quot;titulo&quot;: &quot;&quot;,
+  &quot;feita&quot;: false
+}</pre><pre>{
+  &quot;erro&quot;: &quot;Informe o titulo&quot;
 }</pre></section></article>
 </main>
 </body>

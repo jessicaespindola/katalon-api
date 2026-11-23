@@ -262,3 +262,13 @@ Anote data, o que você rodou e o que o resultado te mostrou. A primeira entrada
 - Caso 07 lê `Data Files/criar-tarefa.csv`: dois títulos válidos e um vazio.
 - A suíte executa o caminho principal antes dos casos 03 e 04.
 - Perfil `porta-3001` guarda a outra `baseUrl`. O limite de tempo é 2000 ms, como aviso.
+
+### 2026-11-23 — nova medição depois dos ajustes
+
+A bateria foi repetida com a API recém-iniciada. Sete casos passaram. O relatório em `relatorio/ultima-execucao.html` agora mostra grupo, schema e tempo, na ordem da suíte.
+
+- A abertura da conexão ficou fora da conta: 58 ms. A bateria em si levou 88 ms.
+- 13 pedidos, soma 20 ms. O mais lento levou 4 ms. Os 13 ficaram abaixo de 2000 ms.
+- O tempo da API não caiu por causa da organização dos testes. O ganho foi enxergar esse tempo, o `Content-Type` e o conjunto de campos de cada resposta.
+- A tabela deixa a organização visível: principal (01, 02, 05), fluxo (06), dados (07) e só então os negativos (03, 04).
+
